@@ -52,15 +52,28 @@ const getRemoteUsers = function () {
         throw new Error('La risposta del server non era corretta')
       }
     })
-    .then((data) => {
-      console.log('FINITO! ECCO I DATI', data)
-      // adesso con data manipoleremo il DOM
+    .then((usersList) => {
+      console.log('FINITO! ECCO I DATI', usersList)
+      // adesso con usersList manipoleremo il DOM
+      // perchè QUI l'operazione è terminata!
+      generateList(usersList)
     })
     .catch((error) => {
       // scrivo qui il codice per quando la Promise finisce male
       console.log('errore', error)
       // in particolare, nel catch finirete quasi esclusivamente per problemi di rete
     })
+}
+
+const generateList = function (arrayOfUsers) {
+  console.log('ORA MANIPOLIAMO IL DOM')
+  const listInThePage = document.getElementById('users-list')
+  arrayOfUsers.forEach((user) => {
+    const newLi = document.createElement('li') // <li></li>
+    newLi.classList.add('list-group-item') // <li class="list-group-item"></li>
+    newLi.innerText = user.name + ' ' + user.email + ' ' + user.phone
+    listInThePage.appendChild(newLi)
+  })
 }
 
 getRemoteUsers()
